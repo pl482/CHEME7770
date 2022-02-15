@@ -55,7 +55,7 @@ function extract_species_dictionary(reaction_phrase::String;
 			species_symbol = String(tmp_array[2])
 
 			# don't cache the ∅ -
-			if (species_symbols != "∅")
+			if (species_symbol != "∅")
 				species_symbol_dictionary[species_symbol] = st_coeff
 			end
 		else 
@@ -149,15 +149,26 @@ begin
 	reaction_array = Array{String,1}()
 
 	# encode the reactions -
-	push!(reaction_array,"v₁,Aspartate+Citrulline,Argininosuccinate,false")
+	
+	push!(reaction_array,"v₁,Aspartate+Citrulline+ATP,Argininosuccinate+AMP+Diphosphate,false")
 	push!(reaction_array,"v₂,Argininosuccinate,Fumarate+Arginine,false")
-	push!(reaction_array,"v₃,Arginine,Ornithine+Urea,false")
-	push!(reaction_array,"v₄,Ornithine+Carbamoyl Phosphate,Citrulline,false")
-	push!(reaction_array,"v₅,Citrulline,Arginine,true")
+	push!(reaction_array,"v₃,Arginine+H2O,Ornithine+Urea,false")
+	push!(reaction_array,"v₄,Ornithine+Carbamoyl Phosphate,Citrulline+Phosphate,false")
+	push!(reaction_array,"v₅,2*Citrulline+2*NitricOxide+4*H2O,2*Arginine+3*NADP+3*H+4*O2,true")
 	push!(reaction_array,"b1,∅,Carbamoyl Phosphate,false")
 	push!(reaction_array,"b2,∅,Aspartate,false")
 	push!(reaction_array,"b3,Fumarate,∅,false")
 	push!(reaction_array,"b4,Urea,∅,false")
+	push!(reaction_array,"b5,ATP,∅,true")
+	push!(reaction_array,"b6,AMP,∅,true")
+	push!(reaction_array,"b7,Diphosphate,∅,true")
+	push!(reaction_array,"b8,H2O,∅,true")
+	push!(reaction_array,"b9,Phosphate,∅,true")
+	push!(reaction_array,"b10,NADPH,∅,true")
+	push!(reaction_array,"b11,H,∅,true")
+	push!(reaction_array,"b12,O2,∅,true")
+	push!(reaction_array,"b13,NitricOxide,∅,true")
+	push!(reaction_array,"b14,NADP,∅,true")
 
 	# compute the stoichiometric matrix -
 	(S, species_array, reaction_name_array) = build_stoichiometric_matrix(reaction_array);
@@ -177,24 +188,31 @@ html"""
 b) - The number of extreme pathways is:
 """
 
+# ╔═╡ 1df0bd99-94fc-4efd-8f77-410d0d82b31d
+html"""
+<p style="font-size:20px;">
+	P is shown here:
+"""
+
 # ╔═╡ d29880dc-f9a0-494e-b9d9-fc48ae034ca7
 html"""
 <p style="font-size:20px;">
-and the number of extreme pathway(s) that produce Urea is:
+and the number of extreme pathway(s) that produce Urea is 1
 """
 
 # ╔═╡ ed56c4cb-3a93-414a-9b87-ae8c228d3b64
 html"""
 <p style="font-size:20px;">
  - Reaction frequency is:</p>
-	sequence follows: "v₁""v₂""v₃""v₄""v₅""b1""b2""b3""b4"
+	sequence follows: "v₁""v₂""v₃""v₄""v₅""b1""b2""b3""b4""b5""b6""b7""b8""b9""b10""b11""b12""b13""b14"
 """
 
 # ╔═╡ 477cc9d5-0464-4ecd-a56c-ae24740f09a0
 html"""
 <p style="font-size:20px;">
  - If we order reactions frequencies from high to low</p>
-	1. "v₃", "v₄", "b1", "b4"; 2. "v₁", "v₂", "v₅", "b2", "b3"
+	1. "v3""v4""b1""b4""b9"</p>
+	2. "v₁""v₂""v₅""b2""b3""b5""b6""b7""b8""b10""b11""b12""b13""b14"</p>
 """
 
 # ╔═╡ 6b65980b-d2e2-4eec-9005-611a0d3efb2c
@@ -209,8 +227,9 @@ species_array
 html"""
 <p style="font-size:20px;">
  - Rank connectivity of metabolites</p>
-	1. "Arginine",  "Citrulline"
-	; 2. "Argininosuccinate", "Aspartate", "Carbamoyl Phosphate", "Fumarate", "Ornithine", "Urea"
+	1."Arginine""Citrulline""H2O"</p>
+	2. "AMP""ATP""Argininosuccinate""Aspartate""Carbamoyl Phosphate""Diphosphate""Fumarate""H""NADP""NitricOxide""O2""Ornithine""Phosphate""Urea"</p>
+	3. "NADPH"</p>
 """
 
 # ╔═╡ 89e39806-7eb2-4f02-8e4f-1fcf6538453a
@@ -236,10 +255,27 @@ function binary_stoichiometric_matrix(matrix::Array{Float64,2})::Array{Int64,2}
 	return B
 end
 
+# ╔═╡ 8847f3dd-839a-4c9e-8806-25449ecd7e9d
+begin
+	B = S |> binary_stoichiometric_matrix
+	MCA = B*transpose(B)
+end
+
+# ╔═╡ dc40da40-197e-4af2-9e1c-ec2fa3b8ec16
+diag(MCA)
+
 # ╔═╡ d1e85e8e-0717-426d-b571-2f2e13090570
 md"""
 #### Reaction connectivity array (RCA)
 """
+
+# ╔═╡ c36b4a54-87e1-49c9-b067-c800f5583051
+begin
+	RCA = transpose(B)*B
+end
+
+# ╔═╡ f5278fbd-7fdb-4f9f-9f6f-40f779a4cf6c
+diag(RCA)
 
 # ╔═╡ f04bfeb9-5892-451c-a8ad-b5c0ad664cf1
 reaction_name_array
@@ -248,14 +284,16 @@ reaction_name_array
 html"""
 <p style="font-size:20px;">
  - Rank connectivity of reactions</p>
-	1. "v₁", "v₂", "v₃", "v₄"; 2. "v₅"; 3. "b1", "b2", "b3", "b4"</p>
+	1. "v₅"</p>
+	2. "v₁"</p>
+	3. "v₃", "v₄"</p>
+	4. "v₂" 
+	5. "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13", "b14"</p>
 Recall the reaction frequency orders:</p>
-	1. "v₃", "v₄", "b1", "b4"; 2. "v₁", "v₂", "v₅", "b2", "b3"</p>
-No corrolation found
+	1. "v3""v4""b1""b4""b9"</p>
+	2. "v₁""v₂""v₅""b2""b3""b5""b6""b7""b8""b10""b11""b12""b13""b14"</p>
+No correlation found
 """
-
-# ╔═╡ eb463271-b95a-47f9-a7de-4a97ae5adeef
-
 
 # ╔═╡ 9f5e31d8-d2a5-4c75-bee5-b3c14cef737c
 function ingredients(path::String)
@@ -312,28 +350,27 @@ begin
 
 end
 
-# ╔═╡ 2ae26ad6-4898-4a6d-95ec-afbf095b655d
-sum(P[:, 9])
+# ╔═╡ 92f9ecf9-1cf5-4afa-91fe-2bdc2ddc933e
+P
 
 # ╔═╡ ca38f21e-677a-453c-89cb-0c5b6d5c1f39
-(P[1, :]+P[2, :])/size(P)[1]
-
-# ╔═╡ 8847f3dd-839a-4c9e-8806-25449ecd7e9d
 begin
-	B = S |> binary_stoichiometric_matrix
-	MCA = B*transpose(B)
+	(m,n) = size(P)
+	reactFreq = zeros(n)
+	for col_index ∈ 1:n
+		count=0
+		for raw_index ∈ 1:m
+			if P[raw_index, col_index]>0
+				count=count+1;
+			end
+		reactFreq[col_index] = count;
+		end
+	end
+
+	# show
+	reactFreq/m
+
 end
-
-# ╔═╡ dc40da40-197e-4af2-9e1c-ec2fa3b8ec16
-diag(MCA)
-
-# ╔═╡ c36b4a54-87e1-49c9-b067-c800f5583051
-begin
-	RCA = transpose(B)*B
-end
-
-# ╔═╡ f5278fbd-7fdb-4f9f-9f6f-40f779a4cf6c
-diag(RCA)
 
 # ╔═╡ a05119d9-c35a-435b-aa30-2610433a6315
 html"""
@@ -2177,29 +2214,29 @@ version = "0.9.1+5"
 # ╠═a9f618c6-3196-432a-ba9d-90f832cce32d
 # ╠═aad458fe-dfa9-44cd-aa29-a5d473824452
 # ╠═087247ae-5ab6-4a3b-baa0-5a0c46159b7e
-# ╠═88bbd38f-f13f-4ed1-b02a-cc4fabb01c8f
+# ╟─88bbd38f-f13f-4ed1-b02a-cc4fabb01c8f
 # ╟─8c94eaa9-37e0-47c3-9fde-f7325a567505
 # ╟─37afb0aa-2708-471d-8de9-bc752a3e57d5
 # ╠═e2be4fed-f980-430b-9586-01a5114c0e41
 # ╠═aff35466-956b-4339-b015-cb116cdb1df9
-# ╠═ff70a45b-fca5-4c38-93bb-f2e5a7248d14
-# ╠═d29880dc-f9a0-494e-b9d9-fc48ae034ca7
-# ╠═2ae26ad6-4898-4a6d-95ec-afbf095b655d
-# ╠═ed56c4cb-3a93-414a-9b87-ae8c228d3b64
-# ╠═ca38f21e-677a-453c-89cb-0c5b6d5c1f39
+# ╟─ff70a45b-fca5-4c38-93bb-f2e5a7248d14
+# ╠═1df0bd99-94fc-4efd-8f77-410d0d82b31d
+# ╠═92f9ecf9-1cf5-4afa-91fe-2bdc2ddc933e
+# ╟─d29880dc-f9a0-494e-b9d9-fc48ae034ca7
+# ╟─ed56c4cb-3a93-414a-9b87-ae8c228d3b64
+# ╟─ca38f21e-677a-453c-89cb-0c5b6d5c1f39
 # ╠═477cc9d5-0464-4ecd-a56c-ae24740f09a0
 # ╠═6b65980b-d2e2-4eec-9005-611a0d3efb2c
 # ╠═8847f3dd-839a-4c9e-8806-25449ecd7e9d
 # ╠═dc40da40-197e-4af2-9e1c-ec2fa3b8ec16
 # ╠═82637e48-81c1-4a41-b447-4faf90978b59
 # ╠═728e06a5-dd82-4418-bf13-038ebfda3abc
-# ╠═89e39806-7eb2-4f02-8e4f-1fcf6538453a
+# ╟─89e39806-7eb2-4f02-8e4f-1fcf6538453a
 # ╠═d1e85e8e-0717-426d-b571-2f2e13090570
 # ╠═c36b4a54-87e1-49c9-b067-c800f5583051
 # ╠═f5278fbd-7fdb-4f9f-9f6f-40f779a4cf6c
 # ╠═f04bfeb9-5892-451c-a8ad-b5c0ad664cf1
 # ╠═68da7864-8e26-4488-83a9-aa5281b0c8c2
-# ╠═eb463271-b95a-47f9-a7de-4a97ae5adeef
 # ╟─9f5e31d8-d2a5-4c75-bee5-b3c14cef737c
 # ╟─4d313489-5cd5-4223-9624-8473cce7e7f5
 # ╟─a05119d9-c35a-435b-aa30-2610433a6315
