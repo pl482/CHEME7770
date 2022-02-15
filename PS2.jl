@@ -221,7 +221,9 @@ md"""
 """
 
 # ╔═╡ 82637e48-81c1-4a41-b447-4faf90978b59
-species_array
+begin
+	species_array
+end
 
 # ╔═╡ 728e06a5-dd82-4418-bf13-038ebfda3abc
 html"""
@@ -262,7 +264,9 @@ begin
 end
 
 # ╔═╡ dc40da40-197e-4af2-9e1c-ec2fa3b8ec16
-diag(MCA)
+begin
+	diag(MCA)
+end
 
 # ╔═╡ d1e85e8e-0717-426d-b571-2f2e13090570
 md"""
@@ -275,7 +279,9 @@ begin
 end
 
 # ╔═╡ f5278fbd-7fdb-4f9f-9f6f-40f779a4cf6c
-diag(RCA)
+begin
+	diag(RCA)
+end
 
 # ╔═╡ f04bfeb9-5892-451c-a8ad-b5c0ad664cf1
 reaction_name_array
@@ -2236,7 +2242,7 @@ version = "0.9.1+5"
 # ╠═c36b4a54-87e1-49c9-b067-c800f5583051
 # ╠═f5278fbd-7fdb-4f9f-9f6f-40f779a4cf6c
 # ╠═f04bfeb9-5892-451c-a8ad-b5c0ad664cf1
-# ╠═68da7864-8e26-4488-83a9-aa5281b0c8c2
+# ╟─68da7864-8e26-4488-83a9-aa5281b0c8c2
 # ╟─9f5e31d8-d2a5-4c75-bee5-b3c14cef737c
 # ╟─4d313489-5cd5-4223-9624-8473cce7e7f5
 # ╟─a05119d9-c35a-435b-aa30-2610433a6315
