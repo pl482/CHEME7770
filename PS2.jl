@@ -21,8 +21,9 @@ md"""
 # ╔═╡ a9f618c6-3196-432a-ba9d-90f832cce32d
 html"""
 <p style="font-size:20px;">
-	Pingchuan Liu</br>
+	Pingchuan Liu,  Xiaoyu Zhang (Both contribute equally for this assignment)</br>
 Smith School of Chemical and Biomolecular Engineering, Cornell University, Ithaca NY 14850</p>
+
 """
 
 # ╔═╡ aad458fe-dfa9-44cd-aa29-a5d473824452
