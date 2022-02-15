@@ -21,7 +21,7 @@ md"""
 # ╔═╡ a9f618c6-3196-432a-ba9d-90f832cce32d
 html"""
 <p style="font-size:20px;">
-	Pingchuan Liu,  Xiaoyu Zhang (Both contribute equally for this assignment)</br>
+	Pingchuan Liu,  Xiaoyu Zhang (Both contribute equally to this assignment)</br>
 Smith School of Chemical and Biomolecular Engineering, Cornell University, Ithaca NY 14850</p>
 
 """
@@ -194,7 +194,7 @@ html"""
 html"""
 <p style="font-size:20px;">
  - If we order reactions frequencies from high to low</p>
-	1. "v₃", "v₄", "b1"; 2. "v₁", "v₂", "v₅", "b2", "b3"
+	1. "v₃", "v₄", "b1", "b4"; 2. "v₁", "v₂", "v₅", "b2", "b3"
 """
 
 # ╔═╡ 6b65980b-d2e2-4eec-9005-611a0d3efb2c
@@ -248,9 +248,9 @@ reaction_name_array
 html"""
 <p style="font-size:20px;">
  - Rank connectivity of reactions</p>
-	1. "v₁", "v₂", "v₃", "v₄"; 2. "v₅"; 3. "b1", "b2", "b3", "b4"
-Recall the reaction frequency orders:
-	1. "v₃", "v₄", "b1"; 2. "v₁", "v₂", "v₅", "b2", "b3"
+	1. "v₁", "v₂", "v₃", "v₄"; 2. "v₅"; 3. "b1", "b2", "b3", "b4"</p>
+Recall the reaction frequency orders:</p>
+	1. "v₃", "v₄", "b1", "b4"; 2. "v₁", "v₂", "v₅", "b2", "b3"</p>
 No corrolation found
 """
 
@@ -2200,10 +2200,10 @@ version = "0.9.1+5"
 # ╠═f04bfeb9-5892-451c-a8ad-b5c0ad664cf1
 # ╠═68da7864-8e26-4488-83a9-aa5281b0c8c2
 # ╠═eb463271-b95a-47f9-a7de-4a97ae5adeef
-# ╠═9f5e31d8-d2a5-4c75-bee5-b3c14cef737c
-# ╠═4d313489-5cd5-4223-9624-8473cce7e7f5
-# ╠═a05119d9-c35a-435b-aa30-2610433a6315
-# ╠═f2c3f522-a122-4ac0-9679-b9fedaa9d2ff
-# ╠═220f9165-cb50-4519-8813-bdf04d7175f8
+# ╟─9f5e31d8-d2a5-4c75-bee5-b3c14cef737c
+# ╟─4d313489-5cd5-4223-9624-8473cce7e7f5
+# ╟─a05119d9-c35a-435b-aa30-2610433a6315
+# ╟─f2c3f522-a122-4ac0-9679-b9fedaa9d2ff
+# ╟─220f9165-cb50-4519-8813-bdf04d7175f8
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
