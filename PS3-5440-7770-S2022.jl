@@ -25,7 +25,7 @@ __Assumptions__:
 
 # ╔═╡ 54d23ccb-211c-4716-a80c-2c087198232d
 md"""
-##### Load/build stoichiometric array
+##### Load/build stoichiometric array.
 """
 
 # ╔═╡ 47a3f3fe-425d-434c-be06-1cd36a56fe25
