@@ -6,6 +6,7 @@ using InteractiveUtils
 
 # ╔═╡ 2babb04c-7f14-4c30-a4f9-348ed31d4fbf
 md"""
+Xiaoyu Zhang(xz352) Pingchuan Liu(pl482)
 ### Flux Balance Analysis of the Urea Cycle
 We are interested in the level of information required for flux balance analysis calculations. In particular, does a flux calculation significantly improve when including different levels of information in the bounds and the dilution terms? To explore this question, calculate the flux distribution through the urea cycle in a population of [HL60 cells](https://www.atcc.org/products/ccl-240?matchtype=b&network=g&device=c&adposition=&keyword=hl60%20cells&gclid=EAIaIQobChMIyfXmmfiG9gIVlDY4Ch3MYQ-YEAAYAiAAEgLPfvD_BwE) growing in batch culture with a doubling time of $\tau_{d}$ = 20 hr for four cases:
 
@@ -25,7 +26,7 @@ __Assumptions__:
 
 # ╔═╡ 54d23ccb-211c-4716-a80c-2c087198232d
 md"""
-##### Load/build stoichiometric array.
+##### Load/build stoichiometric array
 """
 
 # ╔═╡ 47a3f3fe-425d-434c-be06-1cd36a56fe25
@@ -60,6 +61,18 @@ We need to calculate the substrate/$K_{m}$ ratios to calculate the rates. To do 
 md"""
 ##### Are any of the enzymes in our system in the Park dataset?
 To answer this question, let's take advantage of the features of [DataFrames](https://dataframes.juliadata.org/stable/) and do in-memory filtering of the dataset using the [filter](https://dataframes.juliadata.org/stable/lib/functions/#Base.filter) command. Let's filter on the [enzyme commission number (ec number)](https://en.wikipedia.org/wiki/Enzyme_Commission_number).
+"""
+
+# ╔═╡ 66cb5a54-331c-4d05-9bbc-d4dc709d4eb1
+md"""
+We used [Me]/Km constants from
+
+* [Park JO, Rubin SA, Xu YF, Amador-Noguez D, Fan J, Shlomi T, Rabinowitz JD. Metabolite concentrations, fluxes and free energies imply efficient enzyme usage. Nat Chem Biol. 2016 Jul;12(7):482-9. doi: 10.1038/nchembio.2077. Epub 2016 May 2. PMID: 27159581; PMCID: PMC4912430.](https://pubmed.ncbi.nlm.nih.gov/27159581/)
+
+ For any parameter that are not available, we assumed it is 1. We correct the multiple saturation kinetic form as following:
+
+$$v_{i} = V_{max,i}\left[\frac{\prod_{j}\frac{S_{j}}{K_{j}}}{\prod_{j}\left(1+\frac{S_{j}}{K_{j}}\right) }\right]\qquad{i=1,2,\dots,\mathcal{R}}$$
+The corresponding flux is shownn in the table below
 """
 
 # ╔═╡ 70239f9d-1ea8-4ad2-92a3-126cd99de4f0
@@ -278,26 +291,17 @@ begin
 	df = filter(filter_col_key=>x->in(x,ec_number_array), metabolite_table)
 end
 
-# ╔═╡ fe4dd2f0-a8b3-4f89-99dd-d2c20b664d7e
-function dilutionFactor(d::Array)::Float64
-	(m, n)=size(d);
-	pdt=1, pdt2=1;
-	for i in 1:m
-		pdt*=d(i);
-		pdt2*=(d(i)+1);
-	end
-	return pdt/(pdt-1)
-end
-
 # ╔═╡ 2c2ce4b1-e645-4e2e-a5c3-af8e39086e7c
 begin
 	calculated_flux_array = result_case_1.calculated_flux_array
 	calculated_flux_array_dilute=zeros(ℛ);
 	dilute=ones(ℛ);
-	dilute[1]=dilutionFactor([1, 1]);
-	dilute[3]=dilutionFactor([1, 1]);
-	dilute[4]=dilutionFactor([1, 1]);
-	dilute[5]=dilutionFactor([1, 1]);
+	dilute[1]=11.9*96.7/12.9/2/97.7;
+	dilute[2]=1/2;
+	dilute[3]=0.165/1.165/2;
+	dilute[4]=2.81/3.81/2;
+	dilute[5]=73.1^2/74.1^2/2^10;
+	dilute[6]=1/2^11;
 	for i ∈ 1:ℛ
 		calculated_flux_array_dilute[i]=calculated_flux_array[i]*dilute[i];
 	end
@@ -1874,7 +1878,7 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╟─2babb04c-7f14-4c30-a4f9-348ed31d4fbf
+# ╠═2babb04c-7f14-4c30-a4f9-348ed31d4fbf
 # ╠═0fe1a22d-a333-4834-88be-92180c39bbb3
 # ╟─54d23ccb-211c-4716-a80c-2c087198232d
 # ╠═24f4f6d4-7f78-40fa-bb3e-505c0940ec91
@@ -1884,13 +1888,13 @@ version = "0.9.1+5"
 # ╟─7558ee4f-87ca-4fa2-89bb-7a476c5e1252
 # ╟─4dce933f-693c-4788-9c77-63784871a4c0
 # ╟─70d11054-4d8a-4dcc-a8cd-1f762c2dd9b8
-# ╟─12eef416-b3ab-4f03-8ac0-a9783dcca9bd
+# ╠═12eef416-b3ab-4f03-8ac0-a9783dcca9bd
 # ╟─880ce921-308b-4e3c-8bd9-fb9d07d18bd3
 # ╟─07ca2450-8a84-4e71-adcf-91b12a1544ee
 # ╟─e2917845-d956-45f0-a379-ea826caf7d88
-# ╠═85e1ac31-90cf-48da-b4d7-b6c009328084
+# ╟─85e1ac31-90cf-48da-b4d7-b6c009328084
 # ╠═2c2ce4b1-e645-4e2e-a5c3-af8e39086e7c
-# ╠═fe4dd2f0-a8b3-4f89-99dd-d2c20b664d7e
+# ╠═66cb5a54-331c-4d05-9bbc-d4dc709d4eb1
 # ╠═02cc4274-17a1-4570-83fd-58821fef1702
 # ╟─70239f9d-1ea8-4ad2-92a3-126cd99de4f0
 # ╟─cb7d76b8-85f9-4886-a4f3-3f9fb82e42dc
