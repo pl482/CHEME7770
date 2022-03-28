@@ -73,7 +73,7 @@ begin
 	# plot -
 	plot(S_array,v_array,xlims=(0.0,0.01, 1),ylims=(0.0,100))
 	xlabel!("IPTG (mM)",fontsize=18)
-	ylabel!("mM/gDW (μM/h)",fontsize=18)
+	ylabel!("mRNA (count per cell)",fontsize=18)
 	x2=[0;.0005;.005;.012;.053;.216;1];y2=[19;21;41;67;86;93;93]; err=[1;4;4;3;2;2;1]
 	scatter!(x2, y2, yerr=err)
 	
@@ -110,7 +110,7 @@ begin
 	# plot -
 	plot(S_array,v_array,xlims=(0.0,0.01, 1),ylims=(0.0,100))
 	xlabel!("IPTG (mM)",fontsize=18)
-	ylabel!("mRNA (mM/gDW)",fontsize=18)
+	ylabel!("mRNA (count per cell)",fontsize=18)
 	scatter!(x2, y2, yerr=err)
 end
 
